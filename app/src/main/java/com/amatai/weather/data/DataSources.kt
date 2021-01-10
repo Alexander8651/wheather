@@ -1,5 +1,6 @@
 package com.amatai.weather.data
 
+import android.util.Log
 import com.amatai.weather.requestmanager.RetrofitService
 import com.amatai.weather.requestmanager.apiresponses.CityDataResponse
 import com.amatai.weather.requestmanager.apiresponses.CitySearchResponse
@@ -19,6 +20,7 @@ class DataSources(){
     }
 
     suspend fun forecastData(lat:Double, lon:Double): ListResponse {
+        Log.d("lat", lat.toString())
         return RetrofitService.retrofitService.forecastData(lat, lon, appid, 30, metric).await()
     }
 }
