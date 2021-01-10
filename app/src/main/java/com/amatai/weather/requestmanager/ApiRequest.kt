@@ -5,6 +5,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 val BASE_ROOT = "http://api.openweathermap.org/"
 
@@ -14,6 +15,8 @@ val interceptor:HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
 
 val client:OkHttpClient = OkHttpClient.Builder().apply {
     this.addInterceptor(interceptor)
+    this.readTimeout(20, TimeUnit.SECONDS)
+    connectTimeout(10, TimeUnit.SECONDS)
 }.build()
 
 

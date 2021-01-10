@@ -3,6 +3,7 @@ package com.amatai.weather.ui.adapters
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -14,6 +15,8 @@ import com.amatai.weather.ui.activities.MainActivity
 import com.amatai.weather.ui.fragments.HomeFragmetnFragment
 
 class CityAdapter : ListAdapter<CitySearchResponse, CityAdapter.ViewHolder>(CityDiffCallback()) {
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityAdapter.ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -23,37 +26,37 @@ class CityAdapter : ListAdapter<CitySearchResponse, CityAdapter.ViewHolder>(City
         holder.bind(item)
     }
 
-    class ViewHolder private constructor(val binding: CityitemBinding): RecyclerView.ViewHolder(binding.root){
+    class ViewHolder private constructor(val binding: CityitemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item:CitySearchResponse){
+        fun bind(item: CitySearchResponse) {
             binding.item = item
             binding.executePendingBindings()
 
             itemView.setOnClickListener {
 
-                if (state == 0){
-                    HomeFragmetnFragment.addCity(item)
-                }else{
-                    val bundle = Bundle()
-                    bundle.putParcelable("city", item)
-                    MainActivity.navController.navigate(R.id.action_homeFragmetnFragment_to_cityDetailsFragment, bundle)
-                }
+
+                Toast.makeText(itemView.context, "Added new city", Toast.LENGTH_SHORT).show()
+                HomeFragmetnFragment.addCity(item)
+
+
+
             }
         }
 
 
-        companion object{
+        companion object {
             var state = 0
-            fun from(parent: ViewGroup):ViewHolder{
+            fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = CityitemBinding.inflate(layoutInflater,parent,false)
+                val binding = CityitemBinding.inflate(layoutInflater, parent, false)
 
                 return ViewHolder(binding)
             }
         }
     }
 
-    class CityDiffCallback : DiffUtil.ItemCallback<CitySearchResponse>(){
+    class CityDiffCallback : DiffUtil.ItemCallback<CitySearchResponse>() {
         override fun areItemsTheSame(
             oldItem: CitySearchResponse,
             newItem: CitySearchResponse

@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 class ViewmodelHomeFragment(private val repository: Repository) : ViewModel(){
 
-    val _getCitiesFromApi = MutableLiveData<List<CitySearchResponse>>()
+    private val _getCitiesFromApi = MutableLiveData<List<CitySearchResponse>>()
     val getCitiesFromApi  : LiveData<List<CitySearchResponse>>
         get() = _getCitiesFromApi
 
@@ -36,6 +36,14 @@ class ViewmodelHomeFragment(private val repository: Repository) : ViewModel(){
                 return false
             }
         })
+    }
+
+    fun getCityData (lat:Double, lon:Double) = liveData {
+        try {
+            emit(repository.getCityData(lat, lon))
+        }catch (e:Exception){
+
+        }
     }
 
 

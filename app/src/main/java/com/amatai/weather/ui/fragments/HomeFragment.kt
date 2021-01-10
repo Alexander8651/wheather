@@ -16,9 +16,12 @@ import com.amatai.weather.data.DataSources
 import com.amatai.weather.data.repository.RepositoryImpl
 import com.amatai.weather.databinding.DialogcitieslayoutBinding
 import com.amatai.weather.databinding.FragmentHomeFragmetnBinding
+import com.amatai.weather.requestmanager.apiresponses.CityDataResponse
+import com.amatai.weather.requestmanager.apiresponses.CityResponse
 import com.amatai.weather.requestmanager.apiresponses.CitySearchResponse
 import com.amatai.weather.ui.adapters.CityAdapter
 import com.amatai.weather.ui.adapters.CityAdapter.ViewHolder.Companion.state
+import com.amatai.weather.ui.adapters.CityAdapterHome
 import com.amatai.weather.ui.viewmodels.VMFactory
 import com.amatai.weather.ui.viewmodels.ViewmodelHomeFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -39,6 +42,8 @@ class HomeFragmetnFragment : Fragment() {
         }
     }
 
+    lateinit var cityAdapterHome: CityAdapterHome
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,13 +53,27 @@ class HomeFragmetnFragment : Fragment() {
         context ?: binding.root
 
         citiesObserver.observe(viewLifecycleOwner, Observer {
-            cityAdapter = CityAdapter()
+            cityAdapterHome = CityAdapterHome()
 
-            binding.rvCityHome.apply {
-                adapter = cityAdapter
+            val citiesHome = mutableListOf<CityDataResponse>()
+
+            for (i in it) {
+                viewmodelHomeFragment.getCityData(i.lat, i.lon)
+                    .observe(viewLifecycleOwner, Observer {
+                        Log.d("datahome", it.toString())
+                        if (!citiesHome.contains(it)){
+                            citiesHome.add(it)
+                        }
+
+                        binding.rvCityHome.apply {
+                            adapter = cityAdapterHome
+                        }
+                        cityAdapterHome.submitList(citiesHome)
+                    })
             }
-            cityAdapter.submitList(it)
-            cityAdapter.notifyDataSetChanged()
+
+
+            //cityAdapter.notifyDataSetChanged()
         })
 
         binding.floatingActionButton.setOnClickListener {
@@ -65,7 +84,6 @@ class HomeFragmetnFragment : Fragment() {
 
         return binding.root
     }
-
 
 
     fun setUpRecyclerProductosBotonSheet() {
@@ -118,7 +136,7 @@ class HomeFragmetnFragment : Fragment() {
         }
 
         private val citiesList = mutableListOf<CitySearchResponse>()
-        var citiesObserver = MutableLiveData<List<CitySearchResponse>>()
+        private var citiesObserver = MutableLiveData<MutableList<CitySearchResponse>>()
 
     }
 }

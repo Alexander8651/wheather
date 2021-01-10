@@ -4,8 +4,6 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class SysResponse (
-    val country:String? = null,
-    val sunrise:Long? = null,
-    val sunset:Long? = null
+data class WeatherResponse (
+    val description:String? = null
 ) : Parcelable

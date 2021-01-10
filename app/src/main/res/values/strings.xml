@@ -13,6 +13,8 @@
     <string name="clouds">Clouds:</string>
     <string name="country">Country:</string>
     <string name="forecast_title">Forecast</string>
+    <string name="weather">Weather:</string>
+    <string name="day">Day:</string>
 
 
 </resources>

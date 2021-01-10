@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/homeFragmetnFragment"
         android:name="com.amatai.weather.ui.fragments.HomeFragmetnFragment"
-        android:label="fragment_home_fragmetn"
-        tools:layout="@layout/fragment_home_fragmetn" >
+        android:label="Weather"
+        tools:layout="@layout/fragment_home_fragmetn">
         <action
             android:id="@+id/action_homeFragmetnFragment_to_cityDetailsFragment"
             app:destination="@id/cityDetailsFragment"
@@ -21,6 +21,6 @@
     <fragment
         android:id="@+id/cityDetailsFragment"
         android:name="com.amatai.weather.ui.fragments.CityDetailsFragment"
-        android:label="fragment_city_details"
+        android:label="Details"
         tools:layout="@layout/fragment_city_details" />
 </navigation>

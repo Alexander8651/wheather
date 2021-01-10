@@ -13,15 +13,17 @@
             android:id="@+id/rvCityHome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/searchCity"
             tools:itemCount="5"
-            tools:listitem="@layout/cityitem" />
+            app:spanCount="2"
+            tools:listitem="@layout/cityitemhome" />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="8dp"
             android:clickable="true"
             app:tint="@android:color/white"
             android:src="@drawable/ic_baseline_add_24"

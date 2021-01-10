@@ -12,24 +12,28 @@ import androidx.lifecycle.Observer
 import com.amatai.weather.data.DataSources
 import com.amatai.weather.data.repository.RepositoryImpl
 import com.amatai.weather.databinding.FragmentCityBinding
-import com.amatai.weather.requestmanager.apiresponses.CitySearchResponse
+import com.amatai.weather.requestmanager.apiresponses.CityDataResponse
+import com.amatai.weather.ui.adapters.CityAdapterHome
+import com.amatai.weather.ui.adapters.CityForecast
 import com.amatai.weather.ui.viewmodels.VMFactory
 import com.amatai.weather.ui.viewmodels.ViewmodelCityDetailsFragment
-import java.text.SimpleDateFormat
-import java.util.*
 
 class CityDetailsFragment : Fragment() {
 
     val viewmodelCityDetailsFragment by viewModels<ViewmodelCityDetailsFragment> {
         VMFactory(RepositoryImpl(DataSources()))
     }
+    lateinit var binding:FragmentCityBinding
 
-    lateinit var citySearchResponse: CitySearchResponse
+    lateinit var cityDataResponse: CityDataResponse
+    lateinit var cityLocation:Location
+
+    lateinit var cityAdapterHome: CityForecast
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            citySearchResponse = it.getParcelable("city")!!
+            cityDataResponse = it.getParcelable("city")!!
         }
     }
 
@@ -37,21 +41,39 @@ class CityDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentCityBinding.inflate(inflater, container, false)
+        binding = FragmentCityBinding.inflate(inflater, container, false)
         context ?: binding.root
 
-        val cityLocation = Location("")
-        cityLocation.latitude = citySearchResponse.lat
-        cityLocation.longitude = citySearchResponse.lon
+        cityLocation = Location("")
+        cityLocation.latitude = cityDataResponse.coord?.lat!!
+        cityLocation.longitude = cityDataResponse.coord?.lon!!
 
         viewmodelCityDetailsFragment.getCityData(cityLocation.latitude, cityLocation.longitude)
             .observe(viewLifecycleOwner, Observer {
-                Log.d("cityData", it.toString())
+                //Log.d("cityData", it.toString())
 
                 binding.cityData = it
+                binding.weather = it.weather!![0]
             })
 
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        viewmodelCityDetailsFragment.forecastDate(cityLocation.latitude, cityLocation.longitude)
+            .observe(viewLifecycleOwner, Observer {
+                Log.d("forecastData", it.toString())
+                cityAdapterHome = CityForecast()
+
+
+                binding.rvForecast.apply {
+                    adapter = cityAdapterHome
+                }
+                cityAdapterHome.submitList(it.list)
+            })
+
     }
 }
