@@ -9,5 +9,18 @@
         android:id="@+id/homeFragmetnFragment"
         android:name="com.amatai.weather.ui.fragments.HomeFragmetnFragment"
         android:label="fragment_home_fragmetn"
-        tools:layout="@layout/fragment_home_fragmetn" />
+        tools:layout="@layout/fragment_home_fragmetn" >
+        <action
+            android:id="@+id/action_homeFragmetnFragment_to_cityDetailsFragment"
+            app:destination="@id/cityDetailsFragment"
+            app:enterAnim="@anim/zoom_in"
+            app:exitAnim="@anim/zoomoutt"
+            app:popEnterAnim="@anim/zoominn"
+            app:popExitAnim="@anim/zoom_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/cityDetailsFragment"
+        android:name="com.amatai.weather.ui.fragments.CityDetailsFragment"
+        android:label="fragment_city_details"
+        tools:layout="@layout/fragment_city_details" />
 </navigation>

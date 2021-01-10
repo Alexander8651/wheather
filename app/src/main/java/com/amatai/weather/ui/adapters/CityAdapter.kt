@@ -1,12 +1,17 @@
 package com.amatai.weather.ui.adapters
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.amatai.weather.R
 import com.amatai.weather.databinding.CityitemBinding
 import com.amatai.weather.requestmanager.apiresponses.CitySearchResponse
+import com.amatai.weather.ui.activities.MainActivity
+import com.amatai.weather.ui.fragments.HomeFragmetnFragment
 
 class CityAdapter : ListAdapter<CitySearchResponse, CityAdapter.ViewHolder>(CityDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityAdapter.ViewHolder {
@@ -24,11 +29,21 @@ class CityAdapter : ListAdapter<CitySearchResponse, CityAdapter.ViewHolder>(City
             binding.item = item
             binding.executePendingBindings()
 
+            itemView.setOnClickListener {
+
+                if (state == 0){
+                    HomeFragmetnFragment.addCity(item)
+                }else{
+                    val bundle = Bundle()
+                    bundle.putParcelable("city", item)
+                    MainActivity.navController.navigate(R.id.action_homeFragmetnFragment_to_cityDetailsFragment, bundle)
+                }
+            }
         }
 
 
         companion object{
-
+            var state = 0
             fun from(parent: ViewGroup):ViewHolder{
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = CityitemBinding.inflate(layoutInflater,parent,false)
